@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "nivemart"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.111.1"
+uvicorn = "^0.30.3"
+sqlalchemy = "^2.0.31"
+psycopg = {extras = ["binary"], version = "^3.2.1"}
+pydantic-settings = "^2.3.4"
+requests = "^2.32.3"
+pyjwt = "^2.9.0"
+alembic = "^1.13.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

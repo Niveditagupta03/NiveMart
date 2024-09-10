@@ -1,0 +1,18 @@
+https://accounts.googlenpm .com/o/oauth2/v2/auth?client_id=140470690761-hhbmaehivdb66el1r95hrjmjldvoupfv.apps.googleusercontent.com&response_type=code&state=state_parameter_passthrough_value&scope=https%3A//www.googleapis.com/auth/userinfo.email+https%3A//www.googleapis.com/auth/userinfo.profile&redirect_uri=http%3A//localhost:8000/api/v1/auth/oauth&prompt=consent&include_granted_scopes=true
+
+
+
+
+
+
+
+
+
+
+nimart is folder inside that 5 folder are there __pycache,auth,product,routes,user and 3file __init__.py,config,database
+in auth folder 2file are there __pychace,google.py for google authetication
+in product folder 3file are there __pychace, model.py,schema.py
+in routes forlder 3folder are there product,auth, _init__.py, __pychace 
+                                   - in auth folder -inside auth folder there is 3 file -routes,_init__.py, __pychace
+                                   -, product folder -inside there 4file ,public where i store images,-routes,_init__.py, __pychace
+                                   __init__.py, __pychace
