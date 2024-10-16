@@ -8,3 +8,4 @@ generate_migration MESSAGE:
   
 migrate:
     poetry run alembic upgrade head
+

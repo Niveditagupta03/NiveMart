@@ -8,6 +8,10 @@ class Config(BaseSettings):
     sqlalchemy_url: str
     jwt_secret: str
 
+    class Config:
+        env_file = ".env"
+
 
 config = Config()
 print(config.sqlalchemy_url)
+

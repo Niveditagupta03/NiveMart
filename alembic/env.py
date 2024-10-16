@@ -1,90 +1,30 @@
-from logging.config import fileConfig
+"""Add FORMALS to new_producttype_v2 enum
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from pydantic_settings import BaseSettings
+Revision ID: <new_revision_id>
+Revises: <previous_revision_id>
+Create Date: <create_date>
+"""
+from alembic import op
+from sqlalchemy.dialects.postgresql import ENUM
 
-from alembic import context
+# revision identifiers, used by Alembic.
+revision = '<new_revision_id>'
+down_revision = '<previous_revision_id>'
+branch_labels = None
+depends_on = None
 
-from nivemart.database import Base
-from nivemart.user.model import User
-from nivemart.product.model import Product
-
-
-class Config(BaseSettings):
-    sqlalchemy_url: str
-
-
-env_config = Config()
-
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
-config = context.config
-
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
-
-config.set_main_option("sqlalchemy.url", env_config.sqlalchemy_url)
-
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
-
-
-def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
-
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
-    """
-    url = config.get_main_option("sqlalchemy.url")
-    context.configure(
-        url=url,
-        target_metadata=target_metadata,
-        literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
+def upgrade() -> None:
+    op.alter_column(
+        'products',
+        'type',
+        type_=ENUM('CASUAL', 'FORMAL', 'WESTERN', 'EASTERN', 'FANCY_FORMAL', 'OUTING', 'FORMALS', name='new_producttype_v2'),
+        postgresql_using='type::text::new_producttype_v2'
     )
 
-    with context.begin_transaction():
-        context.run_migrations()
-
-
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
+def downgrade() -> None:
+    op.alter_column(
+        'products',
+        'type',
+        type_=ENUM('CASUAL', 'FORMAL', 'WESTERN', 'EASTERN', 'FANCY_FORMAL', 'OUTING', name='new_producttype_v2'),
+        postgresql_using='type::text::new_producttype_v2'
     )
-
-    with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
-
-        with context.begin_transaction():
-            context.run_migrations()
-
-
-if context.is_offline_mode():
-    run_migrations_offline()
-else:
-    run_migrations_online()

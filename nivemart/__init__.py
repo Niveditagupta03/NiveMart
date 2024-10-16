@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from nivemart.database import init_engine, dispose_engine
 from nivemart.routes import router
 
@@ -20,6 +19,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.mount("/public", StaticFiles(directory="nimart/product/public"), name="public")
+
 
 app.include_router(router)

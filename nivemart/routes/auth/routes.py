@@ -14,9 +14,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-logger = logging.getLogger(__name__)
-
-
 def exchange_code_for_token(code, client_id, client_secret, redirect_uri):
     token_url = "https://oauth2.googleapis.com/token"
     data = {
@@ -29,6 +26,7 @@ def exchange_code_for_token(code, client_id, client_secret, redirect_uri):
     response = requests.post(token_url, data=data)
     response.raise_for_status()
     return response.json()
+
 
 
 @auth_router.post("/oauth")
