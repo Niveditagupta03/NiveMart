@@ -1,0 +1,15 @@
+# Ignore log files and temp files
+*.log
+*.tmp
+
+# Ignore node_modules directory
+/node_modules/
+
+# Ignore build output
+/build/
+
+# Ignore environment files
+.env
+
+# Ignore macOS system files
+.DS_Store
