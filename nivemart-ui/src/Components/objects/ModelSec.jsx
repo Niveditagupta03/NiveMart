@@ -35,7 +35,7 @@ const ModelSec = () => {
   const navigate = useNavigate(); // Initialize useNavigate for navigation
   // Array of images
   const images = [
-    "/model14.jpg",
+    // "/model14.jpg",
     "/model15.jpg",
     "/model16.jpg",
     "/model12.jpg",

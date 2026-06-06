@@ -1,30 +1,56 @@
-"""Add FORMALS to new_producttype_v2 enum
+from logging.config import fileConfig
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+from alembic import context
 
-Revision ID: <new_revision_id>
-Revises: <previous_revision_id>
-Create Date: <create_date>
-"""
-from alembic import op
-from sqlalchemy.dialects.postgresql import ENUM
+# This is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = context.config
 
-# revision identifiers, used by Alembic.
-revision = '<new_revision_id>'
-down_revision = '<previous_revision_id>'
-branch_labels = None
-depends_on = None
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
 
-def upgrade() -> None:
-    op.alter_column(
-        'products',
-        'type',
-        type_=ENUM('CASUAL', 'FORMAL', 'WESTERN', 'EASTERN', 'FANCY_FORMAL', 'OUTING', 'FORMALS', name='new_producttype_v2'),
-        postgresql_using='type::text::new_producttype_v2'
+# Import models so they are registered on the Base.metadata
+from nivemart.database import Base
+from nivemart.user.model import User
+from nivemart.product.model import Product
+
+target_metadata = Base.metadata
+
+def run_migrations_offline() -> None:
+    """Run migrations in 'offline' mode."""
+    url = config.get_main_option("sqlalchemy.url")
+    context.configure(
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        dialect_opts={"paramstyle": "named"},
     )
 
-def downgrade() -> None:
-    op.alter_column(
-        'products',
-        'type',
-        type_=ENUM('CASUAL', 'FORMAL', 'WESTERN', 'EASTERN', 'FANCY_FORMAL', 'OUTING', name='new_producttype_v2'),
-        postgresql_using='type::text::new_producttype_v2'
+    with context.begin_transaction():
+        context.run_migrations()
+
+def run_migrations_online() -> None:
+    """Run migrations in 'online' mode."""
+    from nivemart.config import config as app_config
+
+    connectable = engine_from_config(
+        {"sqlalchemy.url": app_config.sqlalchemy_url},
+        prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
     )
+
+    with connectable.connect() as connection:
+        context.configure(
+            connection=connection, target_metadata=target_metadata
+        )
+
+        with context.begin_transaction():
+            context.run_migrations()
+
+if context.is_offline_mode():
+    run_migrations_offline()
+else:
+    run_migrations_online()
